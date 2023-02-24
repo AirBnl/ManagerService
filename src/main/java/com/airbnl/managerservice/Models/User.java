@@ -1,4 +1,4 @@
-package Models;
+package com.airbnl.managerservice.Models;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
