@@ -1,4 +1,4 @@
-package com.airbnl.managerservice.Models;
+package com.airbnl.managerservice.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -7,9 +7,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @Getter
 @Setter
-public class Hotel {
+public class Role {
     private int id;
     private String name;
-    private int managerId;
-    private int countryId;
 }
