@@ -8,7 +8,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+
 @Controller
+@RequestMapping("/hotels")
 public class HotelController {
     private final IHotelService hotelService;
 
@@ -17,39 +19,42 @@ public class HotelController {
     }
 
     @PostMapping
-    String save(Hotel hotel, Model model) {
+    public String save(Hotel hotel, Model model) {
         Hotel SavedHotel = hotelService.save(hotel);
 
         model.addAttribute("hotel", SavedHotel);
         return "hotel";
     }
 
-    @GetMapping
-    String getAllByManagerID(int managerId, Model model) {
-        List<Hotel> hotelList = hotelService.getAllByManagerID(managerId);
-        model.addAttribute("hotelList", hotelList);
+    @GetMapping(path = "/AllByManagerID/{managerId}")
+    public String getAllByManagerID(@PathVariable int managerId, Model model) {
+        List<Hotel> hotels = hotelService.getAllByManagerID(managerId);
+
+        model.addAttribute("hotels", hotels);
         return "hotels";
     }
 
-    @GetMapping
-    String getByHotelIdAndManagerId(int hotelId, int managerId, Model model) {
+    @GetMapping(path = "/ByHotelIdAndManagerId/{hotelId}/{managerId}")
+    public String getByHotelIdAndManagerId(@PathVariable int hotelId
+            , @PathVariable int managerId, Model model) {
         Hotel hotel = hotelService.getByHotelIdAndManagerId(hotelId, managerId);
         model.addAttribute("hotel", hotel);
         return "hotel";
     }
 
     @PutMapping
-    String update(Hotel hotel, Model model) {
+    public String update(@RequestBody Hotel hotel, Model model) {
         // todo save manager id in hotel
         Hotel updatedHotel = hotelService.update(hotel);
-        model.addAttribute("updatedHotel", updatedHotel);
+        model.addAttribute("hotel", updatedHotel);
         return "hotel";
     }
 
-    @DeleteMapping
-    String deleteByIdAndManagerID(int hotelId, int managerId, Model model) {
+    @DeleteMapping(path = "/ByIdAndManagerID/{hotelId}/{managerId}")
+    public String deleteByIdAndManagerID(@PathVariable int hotelId
+            , @PathVariable int managerId, Model model) {
         Hotel deletedHotel = hotelService.deleteByIdAndManagerID(hotelId, managerId);
-        model.addAttribute("deletedHotel", deletedHotel);
+        model.addAttribute("hotel", deletedHotel);
         return "hotel";
     }
 }
