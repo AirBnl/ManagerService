@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.beans.Transient;
+
 @AllArgsConstructor
 @Getter
 @Setter
@@ -12,4 +14,5 @@ public class Hotel {
     private String name;
     private int managerId;
     private int countryId;
+    private String countryName;
 }
