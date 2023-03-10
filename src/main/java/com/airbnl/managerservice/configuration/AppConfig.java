@@ -11,8 +11,14 @@ import org.springframework.web.reactive.function.client.WebClient;
 public class AppConfig {
     @Value("${services.database.controller}")
     private String DBController;
+    @Value("${services.auth.controller}")
+    private String authController;
     @Bean
     WebClient databaseWebClient(WebClient.Builder webclient){
         return webclient.baseUrl(DBController).build();
+    }
+    @Bean
+    WebClient authWebClient(WebClient.Builder webclient){
+        return webclient.baseUrl(authController).build();
     }
 }

@@ -13,13 +13,13 @@ import java.util.List;
 
 @Service
 public class ReservationService implements IReservationService {
-    private final WebClient webClient;
-    public ReservationService(WebClient webClient) {
-        this.webClient = webClient;
+    private final WebClient databaseWebClient;
+    public ReservationService(WebClient databaseWebClient) {
+        this.databaseWebClient = databaseWebClient;
     }
     @Override
     public Reservation save(Reservation reservation, int managerId) {
-        Reservation SavedReservation = webClient.post()
+        Reservation SavedReservation = databaseWebClient.post()
                 .uri("/reservation/save")
                 .accept(MediaType.APPLICATION_JSON)
                 .body(Mono.just(reservation), Reservation.class)
@@ -30,7 +30,7 @@ public class ReservationService implements IReservationService {
     }
     @Override
     public List<Reservation> getAllByHotelAndManagerId(int hotelId, int managerId) {
-        List<Reservation> ReservationList = webClient.get()
+        List<Reservation> ReservationList = databaseWebClient.get()
                 .uri(uriBuilder -> uriBuilder
                         .path("/reservation/byHotelIdAndManagerID")
                         .queryParam("hotelId", hotelId)
@@ -44,7 +44,7 @@ public class ReservationService implements IReservationService {
     }
     @Override
     public Reservation getByReservationIdAndManagerId(int reservationId, int managerId) {
-        Reservation reservation = webClient.get()
+        Reservation reservation = databaseWebClient.get()
                 .uri(uriBuilder -> uriBuilder
                         .path("/reservation/reservationIdAndManagerId")
                         .queryParam("reservationId", reservationId)
