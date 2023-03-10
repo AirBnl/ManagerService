@@ -1,7 +1,5 @@
 package com.airbnl.managerservice.service.Implementation;
 
-import com.airbnl.managerservice.model.Hotel;
-import com.airbnl.managerservice.model.Reservation;
 import com.airbnl.managerservice.model.User;
 import com.airbnl.managerservice.service.Interfaces.IUserService;
 import org.springframework.http.MediaType;
