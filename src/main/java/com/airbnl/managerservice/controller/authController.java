@@ -27,7 +27,7 @@ public class authController {
         return "signup";
     }
     @PostMapping(path = "/login")
-    public RedirectView  login(User user, Model model) {
+    public RedirectView  login(User user) {
         User managerFromDb = userService.getByUserName(user.getUsername());
         if(managerFromDb == null)
             return new RedirectView("/hotels/AllByManagerID/" + managerFromDb.getId());
@@ -36,7 +36,7 @@ public class authController {
     }
 
     @PostMapping(path = "/signup")
-    public RedirectView  signup(User user, Model model) {
+    public RedirectView  signup(User user) {
         userService.save(user);
         int managerId = userService.getByUserName(user.getUsername()).getId();
 
