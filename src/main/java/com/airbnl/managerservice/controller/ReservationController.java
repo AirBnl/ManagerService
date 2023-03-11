@@ -21,23 +21,23 @@ public class ReservationController {
     }
 
     @PutMapping
-    String save(Reservation reservation, int managerId, Model model) {
+    String save(Reservation reservation, Long managerId, Model model) {
         Reservation svedReservation = reservationService.save(reservation, managerId);
 
         model.addAttribute("reservation" , svedReservation);
         return "reservation";
     }
     @GetMapping(path = "/AllByHotelAndManagerId/{hotelId}/{managerId}")
-    String getAllByHotelAndManagerId(@PathVariable int hotelId
-            , @PathVariable int managerId, Model model){
+    String getAllByHotelAndManagerId(@PathVariable Long hotelId
+            , @PathVariable Long managerId, Model model){
         List<Reservation> reservatinList = reservationService.getAllByHotelAndManagerId(hotelId, managerId);
 
         model.addAttribute("reservationList" , reservatinList);
         return "reservations";
     }
     @GetMapping(path = "/ByReservationIdAndManagerId/{reservationId}/{managerId}")
-    String getByReservationIdAndManagerId(@PathVariable int reservationId
-            , @PathVariable int managerId, Model model){
+    String getByReservationIdAndManagerId(@PathVariable Long reservationId
+            , @PathVariable Long managerId, Model model){
         Reservation reservation = reservationService.getByReservationIdAndManagerId(reservationId, managerId);
 
         model.addAttribute("reservation" , reservation);

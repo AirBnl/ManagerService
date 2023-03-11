@@ -18,7 +18,7 @@ public class ReservationService implements IReservationService {
         this.databaseWebClient = databaseWebClient;
     }
     @Override
-    public Reservation save(Reservation reservation, int managerId) {
+    public Reservation save(Reservation reservation, Long managerId) {
         Reservation SavedReservation = databaseWebClient.post()
                 .uri("/reservation/save")
                 .accept(MediaType.APPLICATION_JSON)
@@ -29,7 +29,7 @@ public class ReservationService implements IReservationService {
         return SavedReservation;
     }
     @Override
-    public List<Reservation> getAllByHotelAndManagerId(int hotelId, int managerId) {
+    public List<Reservation> getAllByHotelAndManagerId(Long hotelId, Long managerId) {
         List<Reservation> ReservationList = databaseWebClient.get()
                 .uri(uriBuilder -> uriBuilder
                         .path("/reservation/byHotelIdAndManagerID")
@@ -43,7 +43,7 @@ public class ReservationService implements IReservationService {
         return ReservationList;
     }
     @Override
-    public Reservation getByReservationIdAndManagerId(int reservationId, int managerId) {
+    public Reservation getByReservationIdAndManagerId(Long reservationId, Long managerId) {
         Reservation reservation = databaseWebClient.get()
                 .uri(uriBuilder -> uriBuilder
                         .path("/reservation/reservationIdAndManagerId")

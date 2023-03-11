@@ -30,7 +30,7 @@ public class HotelService implements IHotelService {
     }
 
     @Override
-    public List<Hotel> getAllByManagerID(int managerId) {
+    public List<Hotel> getAllByManagerID(Long managerId) {
         List<Hotel> hotelsList = webClient.get()
                 .uri(uriBuilder -> uriBuilder
                         .path("/hotel/ByManagerID")
@@ -44,7 +44,7 @@ public class HotelService implements IHotelService {
     }
 
     @Override
-    public Hotel getByHotelIdAndManagerId(int hotelId, int managerId) {
+    public Hotel getByHotelIdAndManagerId(Long hotelId, Long managerId) {
         Hotel hotel = webClient.get()
                 .uri(uriBuilder -> uriBuilder
                         .path("/hotel/byHotelIdAndManagerID")
@@ -71,7 +71,7 @@ public class HotelService implements IHotelService {
     }
 
     @Override
-    public Hotel deleteByIdAndManagerID(int hotelId, int managerId) {
+    public Hotel deleteByIdAndManagerID(Long hotelId, Long managerId) {
         Hotel deletedHotel = webClient.delete()
                 .uri(uriBuilder -> uriBuilder
                         .path("/hotel/delete")

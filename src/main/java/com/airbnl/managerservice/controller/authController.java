@@ -38,7 +38,7 @@ public class authController {
     @PostMapping(path = "/signup")
     public RedirectView  signup(User user) {
         userService.save(user);
-        int managerId = userService.getByUserName(user.getUsername()).getId();
+        Long managerId = userService.getByUserName(user.getUsername()).getId();
 
         return new RedirectView("/hotels/AllByManagerID/" + managerId);
     }

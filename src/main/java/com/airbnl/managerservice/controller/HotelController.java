@@ -27,7 +27,7 @@ public class HotelController {
     }
 
     @GetMapping(path = "/AllByManagerID/{managerId}")
-    public String getAllByManagerID(@PathVariable int managerId, Model model) {
+    public String getAllByManagerID(@PathVariable Long managerId, Model model) {
         List<Hotel> hotels = hotelService.getAllByManagerID(managerId);
 
         model.addAttribute("hotels", hotels);
@@ -35,8 +35,8 @@ public class HotelController {
     }
 
     @GetMapping(path = "/ByHotelIdAndManagerId/{hotelId}/{managerId}")
-    public String getByHotelIdAndManagerId(@PathVariable int hotelId
-            , @PathVariable int managerId, Model model) {
+    public String getByHotelIdAndManagerId(@PathVariable Long hotelId
+            , @PathVariable Long managerId, Model model) {
         Hotel hotel = hotelService.getByHotelIdAndManagerId(hotelId, managerId);
         model.addAttribute("hotel", hotel);
         return "hotel";
@@ -51,8 +51,8 @@ public class HotelController {
     }
 
     @DeleteMapping(path = "/ByIdAndManagerID/{hotelId}/{managerId}")
-    public String deleteByIdAndManagerID(@PathVariable int hotelId
-            , @PathVariable int managerId, Model model) {
+    public String deleteByIdAndManagerID(@PathVariable Long hotelId
+            , @PathVariable Long managerId, Model model) {
         Hotel deletedHotel = hotelService.deleteByIdAndManagerID(hotelId, managerId);
         model.addAttribute("hotel", deletedHotel);
         return "hotel";
