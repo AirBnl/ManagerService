@@ -29,11 +29,11 @@ public class HotelController {
     }
 
     @GetMapping(path = "/AllByManagerID")
-    public String getAllByManagerID(@RequestParam long managerId, Model model) {
-        List<Hotel> hotels = hotelService.getAllByManagerID(managerId);
+    public String getAllByManagerID( Model model) {
+//        List<Hotel> hotels = hotelService.getAllByManagerID(managerId);
 
-        model.addAttribute("hotels", hotels);
-        model.addAttribute("managerId", managerId);
+//        model.addAttribute("hotels", hotels);
+//        model.addAttribute("managerId", managerId);
 
         return "hotels";
     }
