@@ -34,23 +34,7 @@ public class HotelController {
 
         return "hotel";
     }
-    @PostMapping(path = "/saveRoom")
-    public String saveRoom(Room room, Model model) {
-        room.setId(-1);
-        Room savedRoom = roomService.save(room);
 
-        model.addAttribute("room", savedRoom);
-
-        return "room";
-    }
-    @GetMapping(path = "/roomById")
-    public String getRoom(@RequestParam long roomId , Model model) {
-        Room roomFromDb = roomService.getById(roomId);
-
-        model.addAttribute("room", roomFromDb);
-
-        return "room";
-    }
 
     @GetMapping(path = {"/AllByManagerID", "/"})
     public String getAllByManagerID(Model model) {
