@@ -4,10 +4,7 @@ import com.airbnl.managerservice.model.Reservation;
 import com.airbnl.managerservice.service.Interfaces.IReservationService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -21,26 +18,32 @@ public class ReservationController {
     }
 
     @PutMapping
-    String save(Reservation reservation, Long managerId, Model model) {
+    String save(Reservation reservation, @RequestParam Long managerId, Model model) {
         Reservation svedReservation = reservationService.save(reservation, managerId);
 
         model.addAttribute("reservation" , svedReservation);
+        model.addAttribute("managerId" , managerId);
+
         return "reservation";
     }
-    @GetMapping(path = "/AllByHotelAndManagerId/{hotelId}/{managerId}")
-    String getAllByHotelAndManagerId(@PathVariable Long hotelId
-            , @PathVariable Long managerId, Model model){
+    @GetMapping(path = "/AllByHotelAndManagerId")
+    String getAllByHotelAndManagerId(@RequestParam Long hotelId
+            , @RequestParam Long managerId, Model model){
         List<Reservation> reservatinList = reservationService.getAllByHotelAndManagerId(hotelId, managerId);
 
         model.addAttribute("reservationList" , reservatinList);
+        model.addAttribute("managerId" , managerId);
+
         return "reservations";
     }
-    @GetMapping(path = "/ByReservationIdAndManagerId/{reservationId}/{managerId}")
-    String getByReservationIdAndManagerId(@PathVariable Long reservationId
-            , @PathVariable Long managerId, Model model){
+    @GetMapping(path = "/ByReservationIdAndManagerId")
+    String getByReservationIdAndManagerId(@RequestParam Long reservationId
+            , @RequestParam Long managerId, Model model){
         Reservation reservation = reservationService.getByReservationIdAndManagerId(reservationId, managerId);
 
         model.addAttribute("reservation" , reservation);
+        model.addAttribute("managerId" , managerId);
+
         return "reservation";
     }
 }
