@@ -30,9 +30,9 @@ public class authController {
     public RedirectView  login(User user) {
         User managerFromDb = userService.getByUserName(user.getUsername());
         if(managerFromDb == null)
-            return new RedirectView("/hotels/AllByManagerID/" + managerFromDb.getId());
+            return new RedirectView("/user/login");
 
-        return new RedirectView("/user/login");
+        return new RedirectView("/hotels/AllByManagerID/" + managerFromDb.getId());
     }
 
     @PostMapping(path = "/signup")
