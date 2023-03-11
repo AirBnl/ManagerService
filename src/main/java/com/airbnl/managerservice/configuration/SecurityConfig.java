@@ -24,14 +24,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.csrf().disable()
-                .authorizeRequests().anyRequest()
-                .authenticated()
+        http.authorizeRequests()
+                .antMatchers("/signup").permitAll()
+                .anyRequest().authenticated()
                 .and()
-                .formLogin().permitAll()
+                .formLogin()
+                .permitAll()
                 .and()
-                .logout().permitAll()
-                .and()
-                .httpBasic();
+                .logout()
+                .permitAll();
     }
 }

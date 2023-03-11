@@ -14,7 +14,7 @@ import java.util.List;
 
 
 @Controller
-@RequestMapping("/hotels")
+@RequestMapping({"/hotels", "/"})
 public class HotelController {
     private final IHotelService hotelService;
     private final IUserService userService;
@@ -52,7 +52,7 @@ public class HotelController {
         return "room";
     }
 
-    @GetMapping(path = "/AllByManagerID")
+    @GetMapping(path = {"/AllByManagerID", "/"})
     public String getAllByManagerID(Model model) {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         long managerId = userService.getByUserName(username, "").getId();
@@ -97,10 +97,12 @@ public class HotelController {
 
         return "hotel";
     }
+
     @GetMapping(path = "/newHotel")
     public String newHotel() {
         return "newHotel";
     }
+
     @GetMapping(path = "/newRoom")
     public String newRoom() {
         return "newRoom";
