@@ -17,7 +17,7 @@
         <li th:each="hotel : ${hotels}">
             <h3 th:text="${hotel.countryName}">Country: </h3>
             <p>Hotel Name: <span th:text="${hotel.name}"></span></p>
-            <form th:action="@{/ByHotelIdAndManagerId}" method="post">
+            <form th:action="@{/ByHotelIdAndManagerId}" method="get">
                 <input type="hidden" th:name="hotelId" th:value="${hotel.id}" />
                 <input type="hidden" th:name="managerId" th:value="${hotel.managerId}" />
                 <button type="submit">view</button>
