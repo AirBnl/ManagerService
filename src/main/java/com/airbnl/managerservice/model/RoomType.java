@@ -8,9 +8,9 @@ import lombok.Setter;
 @Getter
 @Setter
 public class RoomType {
-    private int id;
+    private long id;
     private String name;
     private double price;
-    private int hotelId;
+    private long hotelId;
 
 }
