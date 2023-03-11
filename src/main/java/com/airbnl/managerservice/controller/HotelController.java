@@ -3,6 +3,7 @@ package com.airbnl.managerservice.controller;
 import com.airbnl.managerservice.model.Hotel;
 import com.airbnl.managerservice.model.Room;
 import com.airbnl.managerservice.service.Interfaces.IHotelService;
+import com.airbnl.managerservice.service.Interfaces.IRoomService;
 import com.airbnl.managerservice.service.Interfaces.IUserService;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -17,9 +18,11 @@ import java.util.List;
 public class HotelController {
     private final IHotelService hotelService;
     private final IUserService userService;
-    public HotelController(IHotelService hotelService, IUserService userService) {
+    private final IRoomService roomService;
+    public HotelController(IHotelService hotelService, IUserService userService, IRoomService roomService) {
         this.hotelService = hotelService;
         this.userService = userService;
+        this.roomService = roomService;
     }
 
     @PostMapping(path = "/save")
@@ -34,7 +37,7 @@ public class HotelController {
     @PostMapping(path = "/saveRoom")
     public String saveRoom(Room room, Model model) {
         room.setId(-1);
-        Room savedRoom = hotelService.saveRoom(room);
+        Room savedRoom = roomService.save(room);
 
         model.addAttribute("room", savedRoom);
 
@@ -42,7 +45,7 @@ public class HotelController {
     }
     @GetMapping(path = "/roomById")
     public String getRoom(@RequestParam long roomId , Model model) {
-        Room roomFromDb = hotelService.getRoomById(roomId);
+        Room roomFromDb = roomService.getById(roomId);
 
         model.addAttribute("room", roomFromDb);
 

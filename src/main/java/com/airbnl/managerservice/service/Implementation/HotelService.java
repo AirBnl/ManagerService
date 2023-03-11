@@ -29,35 +29,12 @@ public class HotelService implements IHotelService {
                 .block();
         return savedHotel;
     }
-    @Override
-    public Room saveRoom(Room room){
-        Room savedRoom = webClient.post()
-                .uri("/hotel/saveRoom")
-                .accept(MediaType.APPLICATION_JSON)
-                .body(Mono.just(room), Room.class)
-                .retrieve()
-                .bodyToMono(Room.class)
-                .block();
-        return savedRoom;
-    }
-    @Override
-    public Room getRoomById(long roomId) {
-        Room room = webClient.get()
-                .uri(uriBuilder -> uriBuilder
-                        .path("/hotel/roomById")
-                        .queryParam("roomId", roomId)
-                        .build())
-                .accept(MediaType.APPLICATION_JSON)
-                .retrieve()
-                .bodyToMono(Room.class)
-                .block();
-        return room;
-    }
+
     @Override
     public List<Hotel> getAllByManagerID(Long managerId) {
         List<Hotel> hotelsList = webClient.get()
                 .uri(uriBuilder -> uriBuilder
-                        .path("/hotel/ByManagerID")
+                        .path("/hotel/allByManagerID")
                         .queryParam("managerId", managerId)
                         .build())
                 .accept(MediaType.APPLICATION_JSON)
@@ -71,7 +48,7 @@ public class HotelService implements IHotelService {
     public Hotel getByHotelIdAndManagerId(Long hotelId, Long managerId) {
         Hotel hotel = webClient.get()
                 .uri(uriBuilder -> uriBuilder
-                        .path("/hotel/byHotelIdAndManagerID")
+                        .path("/hotel/byHotelIdAndManagerId")
                         .queryParam("hotelId", hotelId)
                         .queryParam("managerId", managerId)
                         .build())
