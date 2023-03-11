@@ -48,6 +48,7 @@ public class HotelService implements IHotelService {
         Hotel hotel = webClient.get()
                 .uri(uriBuilder -> uriBuilder
                         .path("/hotel/byHotelIdAndManagerID")
+                        .queryParam("hotelId", hotelId)
                         .queryParam("managerId", managerId)
                         .build())
                 .accept(MediaType.APPLICATION_JSON)
@@ -71,7 +72,7 @@ public class HotelService implements IHotelService {
 
     @Override
     public Hotel deleteByIdAndManagerID(int hotelId, int managerId) {
-        Hotel deletedHotel = webClient.get()
+        Hotel deletedHotel = webClient.delete()
                 .uri(uriBuilder -> uriBuilder
                         .path("/hotel/delete")
                         .queryParam("hotelId", hotelId)
