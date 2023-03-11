@@ -12,13 +12,22 @@
 </header>
 
 <div class="search-results">
-    <h2>Search Results</h2>
-    <h3 th:text="${hotel.countryName}">Country: </h3>
-    <p>Hotel Name: <span th:text="${hotel.name}"></span></p>
-    <form th:action="@{/ByHotelIdAndManagerId}" method="post">
-        <input type="hidden" th:name="hotelId" th:value="${hotel.id}" />
-        <input type="hidden" th:name="managerId" th:value="${hotel.managerId}" />
-        <button type="submit">view</button>
+    <h2>new Hotel</h2>
+    <form th:action="@{/save}" method="post">
+        <input type="hidden" name="id" id="id">
+
+        <label for="name">Name:</label>
+        <input type="text" name="name" id="name">
+
+        <input type="hidden" name="managerId" id="managerId">
+
+        <label for="countryId">Country ID:</label>
+        <input type="text" name="countryId" id="countryId">
+
+        <label for="countryName">Country Name:</label>
+        <input type="text" name="countryName" id="countryName">
+
+        <button type="submit">Submit</button>
     </form>
 </div>
 
