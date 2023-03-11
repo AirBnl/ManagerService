@@ -24,6 +24,7 @@ public class HotelController {
 
     @PostMapping(path = "/save")
     public String save(Hotel hotel, Model model) {
+        hotel.setId(-1);
         Hotel SavedHotel = hotelService.save(hotel);
 
         model.addAttribute("hotel", SavedHotel);
@@ -32,6 +33,7 @@ public class HotelController {
     }
     @PostMapping(path = "/saveRoom")
     public String saveRoom(Room room, Model model) {
+        room.setId(-1);
         Room savedRoom = hotelService.saveRoom(room);
 
         model.addAttribute("room", savedRoom);
