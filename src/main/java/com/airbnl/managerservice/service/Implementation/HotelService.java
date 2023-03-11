@@ -1,6 +1,7 @@
 package com.airbnl.managerservice.service.Implementation;
 
 import com.airbnl.managerservice.model.Hotel;
+import com.airbnl.managerservice.model.Room;
 import com.airbnl.managerservice.service.Interfaces.IHotelService;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.MediaType;
@@ -28,7 +29,30 @@ public class HotelService implements IHotelService {
                 .block();
         return savedHotel;
     }
-
+    @Override
+    public Room saveRoom(Room room){
+        Room savedRoom = webClient.post()
+                .uri("/hotel/saveRoom")
+                .accept(MediaType.APPLICATION_JSON)
+                .body(Mono.just(room), Room.class)
+                .retrieve()
+                .bodyToMono(Room.class)
+                .block();
+        return savedRoom;
+    }
+    @Override
+    public Room getRoomById(long roomId) {
+        Room room = webClient.get()
+                .uri(uriBuilder -> uriBuilder
+                        .path("/hotel/roomById")
+                        .queryParam("roomId", roomId)
+                        .build())
+                .accept(MediaType.APPLICATION_JSON)
+                .retrieve()
+                .bodyToMono(Room.class)
+                .block();
+        return room;
+    }
     @Override
     public List<Hotel> getAllByManagerID(Long managerId) {
         List<Hotel> hotelsList = webClient.get()

@@ -1,6 +1,7 @@
 package com.airbnl.managerservice.controller;
 
 import com.airbnl.managerservice.model.Hotel;
+import com.airbnl.managerservice.model.Room;
 import com.airbnl.managerservice.service.Interfaces.IHotelService;
 import com.airbnl.managerservice.service.Interfaces.IUserService;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -21,19 +22,33 @@ public class HotelController {
         this.userService = userService;
     }
 
-    @PostMapping
+    @PostMapping(path = "/save")
     public String save(Hotel hotel, Model model) {
         Hotel SavedHotel = hotelService.save(hotel);
-
-        String username = SecurityContextHolder.getContext().getAuthentication().getName();
 
         model.addAttribute("hotel", SavedHotel);
 
         return "hotel";
     }
+    @PostMapping(path = "/saveRoom")
+    public String saveRoom(Room room, Model model) {
+        Room savedRoom = hotelService.saveRoom(room);
+
+        model.addAttribute("room", savedRoom);
+
+        return "room";
+    }
+    @GetMapping(path = "/roomById")
+    public String getRoom(@RequestParam long roomId , Model model) {
+        Room roomFromDb = hotelService.getRoomById(roomId);
+
+        model.addAttribute("room", roomFromDb);
+
+        return "room";
+    }
 
     @GetMapping(path = "/AllByManagerID")
-    public String getAllByManagerID( Model model) {
+    public String getAllByManagerID(Model model) {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         long managerId = userService.getByUserName(username, "").getId();
 
@@ -76,5 +91,13 @@ public class HotelController {
         model.addAttribute("hotel", deletedHotel);
 
         return "hotel";
+    }
+    @GetMapping(path = "/newHotel")
+    public String newHotel() {
+        return "newHotel";
+    }
+    @GetMapping(path = "/newRoom")
+    public String newRoom() {
+        return "newRoom";
     }
 }
