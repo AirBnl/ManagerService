@@ -31,7 +31,7 @@ public class UserService implements IUserService {
     public User getByUserName(String username) {
         User userFromDb = webClient.get()
                 .uri(uriBuilder -> uriBuilder
-                        .path("/user")
+                        .path("/user/getByUsername")
                         .queryParam("username", username)
                         .build())
                 .accept(MediaType.APPLICATION_JSON)
