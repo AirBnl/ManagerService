@@ -20,6 +20,14 @@
         <input type="hidden" th:name="managerId" th:value="${hotel.managerId}" />
         <button type="submit">view</button>
     </form>
+    <ul>
+        <li th:each="room : ${rooms}">
+            <h3 th:text="${room.number}">Room No: </h3>
+            <p>Hotel Name: <span th:text="${room.hotelId}"></span></p>
+            <p>Bed Count: <span th:text="${room.bedCount}"></span></p>
+            <p>Room Type: <span th:text="${room.typeId}"></span></p>
+        </li>
+    </ul>
 </div>
 
 <a href="newRoom.html">New Hotel</a>

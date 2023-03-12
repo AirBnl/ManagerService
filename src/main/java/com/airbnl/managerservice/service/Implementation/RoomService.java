@@ -2,10 +2,13 @@ package com.airbnl.managerservice.service.Implementation;
 
 import com.airbnl.managerservice.model.Room;
 import com.airbnl.managerservice.service.Interfaces.IRoomService;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
+
+import java.util.List;
 
 @Service
 public class RoomService implements IRoomService {
@@ -36,5 +39,19 @@ public class RoomService implements IRoomService {
                 .bodyToMono(Room.class)
                 .block();
         return room;
+    }
+    @Override
+    public List<Room> getByHotelAndManagerId(long hotelId, long roomId) {
+        List<Room> rooms = webClient.get()
+                .uri(uriBuilder -> uriBuilder
+                        .path("/room/getById")
+                        .queryParam("hotelId", hotelId)
+                        .queryParam("roomId", roomId)
+                        .build())
+                .accept(MediaType.APPLICATION_JSON)
+                .retrieve()
+                .bodyToMono(new ParameterizedTypeReference<List<Room>>(){})
+                .block();
+        return rooms;
     }
 }
