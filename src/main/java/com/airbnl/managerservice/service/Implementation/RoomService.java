@@ -41,10 +41,10 @@ public class RoomService implements IRoomService {
         return room;
     }
     @Override
-    public List<Room> getAllByHotelAndManagerId(long hotelId, long roomId) {
+    public List<Room> getAllByHotelIdAndManagerId(long hotelId, long roomId) {
         List<Room> rooms = webClient.get()
                 .uri(uriBuilder -> uriBuilder
-                        .path("/room/getAllByHotelAndManagerId")
+                        .path("/room/getAllByHotelIdAndManagerId")
                         .queryParam("hotelId", hotelId)
                         .queryParam("roomId", roomId)
                         .build())

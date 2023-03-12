@@ -8,5 +8,5 @@ public interface IRoomService {
     Room save(Room room);
     Room getById(long roomId);
 
-    List<Room> getAllByHotelAndManagerId(long hotelId, long roomId);
+    List<Room> getAllByHotelIdAndManagerId(long hotelId, long roomId);
 }

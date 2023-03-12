@@ -54,7 +54,7 @@ public class HotelController {
         long managerId = userService.getByUserName(username, "").getId();
 
         Hotel hotel = hotelService.getByHotelIdAndManagerId(hotelId, managerId);
-        List<Room> rooms = roomService.getAllByHotelAndManagerId(hotelId , managerId);
+        List<Room> rooms = roomService.getAllByHotelIdAndManagerId(hotelId , managerId);
 
         model.addAttribute("hotel", hotel);
         model.addAttribute("rooms", rooms);
