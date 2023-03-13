@@ -1,7 +1,9 @@
 package com.airbnl.managerservice.service.Implementation;
 
+import com.airbnl.managerservice.model.Country;
+import com.airbnl.managerservice.model.DBHotel;
 import com.airbnl.managerservice.model.Hotel;
-import com.airbnl.managerservice.model.Room;
+import com.airbnl.managerservice.service.Interfaces.ICountryService;
 import com.airbnl.managerservice.service.Interfaces.IHotelService;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.MediaType;
@@ -9,44 +11,54 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class HotelService implements IHotelService {
     private final WebClient webClient;
-    public HotelService(WebClient databaseWebClient) {
+    private final ICountryService countryService;
+
+    public HotelService(WebClient databaseWebClient, ICountryService countryService) {
         this.webClient = databaseWebClient;
+        this.countryService = countryService;
     }
 
     @Override
     public Hotel save(Hotel hotel) {
-        Hotel savedHotel = webClient.post()
+        DBHotel savedHotel = webClient.post()
                 .uri("/hotel/save")
                 .accept(MediaType.APPLICATION_JSON)
-                .body(Mono.just(hotel), Hotel.class)
+                .body(Mono.just(toDBHotel(hotel)), DBHotel.class)
                 .retrieve()
-                .bodyToMono(Hotel.class)
+                .bodyToMono(DBHotel.class)
                 .block();
-        return savedHotel;
+        return fromDBHotel(savedHotel);
     }
 
     @Override
     public List<Hotel> getAllByManagerID(Long managerId) {
-        List<Hotel> hotelsList = webClient.get()
+        List<DBHotel> hotelsList = webClient.get()
                 .uri(uriBuilder -> uriBuilder
                         .path("/hotel/allByManagerID")
                         .queryParam("managerId", managerId)
                         .build())
                 .accept(MediaType.APPLICATION_JSON)
                 .retrieve()
-                .bodyToMono(new ParameterizedTypeReference<List<Hotel>>(){})
+                .bodyToMono(new ParameterizedTypeReference<List<DBHotel>>() {
+                })
                 .block();
-        return hotelsList;
+        List<Hotel> hotels = new ArrayList<>();
+        if (hotelsList != null)
+            for (DBHotel dbHotel : hotelsList) {
+                hotels.add(fromDBHotel(dbHotel));
+            }
+        return hotels;
     }
 
     @Override
     public Hotel getByHotelIdAndManagerId(Long hotelId, Long managerId) {
-        Hotel hotel = webClient.get()
+        DBHotel dbHotel = webClient.get()
                 .uri(uriBuilder -> uriBuilder
                         .path("/hotel/byHotelIdAndManagerId")
                         .queryParam("hotelId", hotelId)
@@ -54,26 +66,26 @@ public class HotelService implements IHotelService {
                         .build())
                 .accept(MediaType.APPLICATION_JSON)
                 .retrieve()
-                .bodyToMono(Hotel.class)
+                .bodyToMono(DBHotel.class)
                 .block();
-        return hotel;
+        return fromDBHotel(dbHotel);
     }
 
     @Override
     public Hotel update(Hotel hotel) {
-        Hotel updatedHotel = webClient.put()
+        DBHotel updatedHotel = webClient.put()
                 .uri("/hotel/update")
                 .accept(MediaType.APPLICATION_JSON)
-                .body(Mono.just(hotel), Hotel.class)
+                .body(Mono.just(toDBHotel(hotel)), DBHotel.class)
                 .retrieve()
-                .bodyToMono(Hotel.class)
+                .bodyToMono(DBHotel.class)
                 .block();
-        return updatedHotel;
+        return fromDBHotel(updatedHotel);
     }
 
     @Override
     public Hotel deleteByIdAndManagerID(Long hotelId, Long managerId) {
-        Hotel deletedHotel = webClient.delete()
+        DBHotel deletedHotel = webClient.delete()
                 .uri(uriBuilder -> uriBuilder
                         .path("/hotel/delete")
                         .queryParam("hotelId", hotelId)
@@ -81,8 +93,19 @@ public class HotelService implements IHotelService {
                         .build())
                 .accept(MediaType.APPLICATION_JSON)
                 .retrieve()
-                .bodyToMono(Hotel.class)
+                .bodyToMono(DBHotel.class)
                 .block();
-        return deletedHotel;
+        return fromDBHotel(deletedHotel);
+    }
+
+    private Hotel fromDBHotel(DBHotel dbHotel) {
+        if (dbHotel == null)
+            return null;
+        Country country = countryService.getCountryById(dbHotel.getCountryId());
+        return new Hotel(dbHotel.getId(), dbHotel.getName(), dbHotel.getManagerId(), dbHotel.getCountryId(), country != null ? country.getName() : "");
+    }
+
+    private DBHotel toDBHotel(Hotel hotel) {
+        return hotel == null ? null : new DBHotel(hotel.getId(), hotel.getName(), hotel.getManagerId(), hotel.getCountryId());
     }
 }

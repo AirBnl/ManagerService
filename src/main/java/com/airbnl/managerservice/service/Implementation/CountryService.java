@@ -13,9 +13,11 @@ import java.util.List;
 @Service
 public class CountryService implements ICountryService {
     private final WebClient webClient;
+
     public CountryService(WebClient databaseWebClient) {
         this.webClient = databaseWebClient;
     }
+
     @Override
     public List<Country> getAll() {
         List<Country> countryList = webClient.get()
@@ -24,7 +26,8 @@ public class CountryService implements ICountryService {
                         .build())
                 .accept(MediaType.APPLICATION_JSON)
                 .retrieve()
-                .bodyToMono(new ParameterizedTypeReference<List<Country>>(){})
+                .bodyToMono(new ParameterizedTypeReference<List<Country>>() {
+                })
                 .block();
         return countryList;
     }
@@ -39,5 +42,18 @@ public class CountryService implements ICountryService {
                 .bodyToMono(Country.class)
                 .block();
         return savedCountry;
+    }
+
+    @Override
+    public Country getCountryById(long id) {
+        return webClient.get()
+                .uri(uriBuilder -> uriBuilder
+                        .path("/country/getCountryById")
+                        .queryParam("countryId", id)
+                        .build())
+                .accept(MediaType.APPLICATION_JSON)
+                .retrieve()
+                .bodyToMono(Country.class)
+                .block();
     }
 }

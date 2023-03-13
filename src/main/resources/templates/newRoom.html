@@ -13,17 +13,27 @@
 
 <div class="search-results">
   <h2>New Room</h2>
-  <form th:action="@{/newHotel}" method="post">
+  <form th:action="@{/room/save}" method="post">
     <input type="hidden" name="id" id="id">
 
-    <label for="hotelId">Hotel ID:</label>
-    <input type="text" name="hotelId" id="hotelId">
+    <div class="form-group">
+      <label for="hotel-select">Hotel</label>
+      <select id="hotel-select" name="hotelId">
+        <option value="">-- Select a hotel --</option>
+        <option th:each="hotel : ${hotels}" th:value="${hotel.getId()}" th:text="${hotel.getName()}"></option>
+      </select>
+    </div>
 
-    <label for="number">Number:</label>
-    <input type="text" name="number" id="number">
+    <label for="roomNo">Number:</label>
+    <input type="text" name="roomNo" id="roomNo">
 
-    <label for="typeId">Type ID:</label>
-    <input type="text" name="typeId" id="typeId">
+    <div class="form-group">
+      <label for="room-type-select">Room Type</label>
+      <select id="room-type-select" name="roomTypeId">
+        <option value="">-- Select a room type --</option>
+        <option th:each="roomType : ${roomTypes}" th:value="${roomType.getId()}" th:text="${roomType.getName()}"></option>
+      </select>
+    </div>
 
     <label for="bedCount">Bed Count:</label>
     <input type="text" name="bedCount" id="bedCount">
@@ -32,7 +42,6 @@
   </form>
 </div>
 
-<a href="newRoom.html">New Hotel</a>
 
 <footer>
   <p>&copy; 2023 AirBNL</p>

@@ -12,24 +12,24 @@
 </header>
 
 <div class="search-results">
-    <h2>new Hotel</h2>
-    <form th:action="@{/save}" method="post">
-        <input type="hidden" name="id" id="id">
+    <h2>Search Results</h2>
+    <form th:action="@{/hotels/edit}" method="post">
+        <input type="hidden" name="hotelId" id="hotelId" th:value="${hotel.getId()}">
 
         <label for="hotelName">Name:</label>
-        <input type="text" name="hotelName" id="hotelName">
+        <input type="text" name="hotelName" id="hotelName" th:value="${hotel.getName()}">
 
         <div class="form-group">
             <label for="country-select">Country</label>
             <select id="country-select" name="countryId">
                 <option value="">-- Select a country --</option>
-                <option th:each="country : ${countries}" th:value="${country.getId()}" th:text="${country.getName()}"></option>
+                <option th:each="country : ${countries}" th:value="${country.getId()}"
+                        th:text="${country.getName()}"></option>
             </select>
-        </div>
 
-        <button type="submit">Submit</button>
+        </div>
+        <button type="submit">Edit Hotel</button>
     </form>
-    <a href="/hotels/newRoom"><button> New Room</button></a>
 </div>
 
 

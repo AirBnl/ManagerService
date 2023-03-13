@@ -6,4 +6,5 @@ import com.airbnl.managerservice.model.User;
 public interface IUserService {
     User save(User user);
     User getByUserName(String username,String password);
+    User getUsernameById(long userId);
 }

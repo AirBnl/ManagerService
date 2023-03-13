@@ -1,10 +1,10 @@
 package com.airbnl.managerservice.controller;
 
+import com.airbnl.managerservice.model.Country;
 import com.airbnl.managerservice.model.Hotel;
 import com.airbnl.managerservice.model.Room;
-import com.airbnl.managerservice.service.Interfaces.IHotelService;
-import com.airbnl.managerservice.service.Interfaces.IRoomService;
-import com.airbnl.managerservice.service.Interfaces.IUserService;
+import com.airbnl.managerservice.model.RoomType;
+import com.airbnl.managerservice.service.Interfaces.*;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,15 +19,22 @@ public class HotelController {
     private final IHotelService hotelService;
     private final IUserService userService;
     private final IRoomService roomService;
-    public HotelController(IHotelService hotelService, IUserService userService, IRoomService roomService) {
+    private final ICountryService countryService;
+    private final IRoomTypeService roomTypeService;
+
+    public HotelController(IHotelService hotelService, IUserService userService, IRoomService roomService, ICountryService countryService, IRoomTypeService roomTypeService) {
         this.hotelService = hotelService;
         this.userService = userService;
         this.roomService = roomService;
+        this.countryService = countryService;
+        this.roomTypeService = roomTypeService;
     }
 
     @PostMapping(path = "/save")
-    public String save(Hotel hotel, Model model) {
-        hotel.setId(-1);
+    public String save(@RequestParam("countryId") long countryId, @RequestParam("hotelName") String hotelName, Model model) {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        long managerId = userService.getByUserName(username, "").getId();
+        Hotel hotel = new Hotel(-1, hotelName, managerId, countryId, "");
         Hotel SavedHotel = hotelService.save(hotel);
 
         model.addAttribute("hotel", SavedHotel);
@@ -54,7 +61,7 @@ public class HotelController {
         long managerId = userService.getByUserName(username, "").getId();
 
         Hotel hotel = hotelService.getByHotelIdAndManagerId(hotelId, managerId);
-        List<Room> rooms = roomService.getAllByHotelIdAndManagerId(hotelId , managerId);
+        List<Room> rooms = roomService.getAllByHotelIdAndManagerId(hotelId, managerId);
 
         model.addAttribute("hotel", hotel);
         model.addAttribute("rooms", rooms);
@@ -62,34 +69,63 @@ public class HotelController {
         return "hotel";
     }
 
-    @PutMapping
-    public String update(@RequestBody Hotel hotel, Model model) {
-        Hotel updatedHotel = hotelService.update(hotel);
+    @GetMapping("/editView")
+    public String updateView(@RequestParam("hotelId") long hotelId, Model model) {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        long managerId = userService.getByUserName(username, "").getId();
 
-        model.addAttribute("hotel", updatedHotel);
+        Hotel hotel = hotelService.getByHotelIdAndManagerId(hotelId, managerId);
+        List<Country> countries = countryService.getAll();
 
+        model.addAttribute("countries", countries);
+        model.addAttribute("hotel", hotel);
+
+        return "updateHotel";
+    }
+
+    @PostMapping("/edit")
+    public String update(@RequestParam("hotelId") long hotelId, @RequestParam("hotelName") String hotelName, @RequestParam("countryId") long countryId, Model model) {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        long managerId = userService.getByUserName(username, "").getId();
+
+        Hotel hotel = hotelService.getByHotelIdAndManagerId(hotelId, managerId);
+
+        hotel.setName(hotelName);
+        hotel.setCountryId(countryId);
+
+        hotel = hotelService.update(hotel);
+
+        model.addAttribute("hotel", hotel);
         return "hotel";
     }
 
-    @DeleteMapping(path = "/ByIdAndManagerID")
+    @PostMapping(path = "/delete")
     public String deleteByIdAndManagerID(@RequestParam long hotelId, Model model) {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         long managerId = userService.getByUserName(username, "").getId();
 
-        Hotel deletedHotel = hotelService.deleteByIdAndManagerID(hotelId, managerId);
+        hotelService.deleteByIdAndManagerID(hotelId, managerId);
 
-        model.addAttribute("hotel", deletedHotel);
-
-        return "hotel";
+        return "redirect:/";
     }
 
     @GetMapping(path = "/newHotel")
-    public String newHotel() {
+    public String newHotel(Model model) {
+        List<Country> countries = countryService.getAll();
+        model.addAttribute("countries", countries);
         return "newHotel";
     }
 
     @GetMapping(path = "/newRoom")
-    public String newRoom() {
+    public String newRoom(Model model) {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        long managerId = userService.getByUserName(username, "").getId();
+
+        List<RoomType> roomTypes = roomTypeService.getAllRoomTypes();
+        model.addAttribute("roomTypes", roomTypes);
+
+        List<Hotel> hotels = hotelService.getAllByManagerID(managerId);
+        model.addAttribute("hotels", hotels);
         return "newRoom";
     }
 }

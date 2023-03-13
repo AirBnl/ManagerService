@@ -11,9 +11,7 @@ import java.sql.Timestamp;
 public class Reservation {
     private long id;
     private long userId;
-    private String username;
     private long roomId;
-    private String roomName;
     private double cost;
     private Timestamp dateFrom;
     private Timestamp dateTo;

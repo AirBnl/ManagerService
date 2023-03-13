@@ -9,4 +9,8 @@ public interface IRoomService {
     Room getById(long roomId);
 
     List<Room> getAllByHotelIdAndManagerId(long hotelId, long roomId);
+
+    Room updateRoom(Room room);
+
+    Room deleteById(long roomId);
 }
